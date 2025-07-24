@@ -1,0 +1,26 @@
+1. Install Libraries (via Arduino Library Manager)
+
+    FirebaseESP8266 by Mobizt
+
+    ESP8266WiFi
+
+2. Firebase Setup
+
+    Create a Firebase project
+
+    Go to Realtime Database → Create Database
+
+    Set rules (temporary for testing):
+
+{
+  "rules": {
+    ".read": true,
+    ".write": true
+  }
+}
+
+    Get the Firebase Database URL (e.g., https://your-project-id.firebaseio.com/)
+
+    Generate a Database Secret (Legacy token):
+
+        Settings ⚙️ > Service Accounts > Database secrets

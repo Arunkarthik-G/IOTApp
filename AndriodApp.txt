@@ -1,0 +1,72 @@
+ FOR ANDROID APP
+1. 🔧 Register Your App in Firebase
+
+    In the Firebase Console:
+    Go to Project Settings > General > Your Apps
+    Click Android icon (📱) to add a new Android app
+
+    Enter:
+
+        Package name (e.g., com.example.ultrasonicapp)
+
+        App nickname (optional)
+
+        SHA-1 (optional, used for login later)
+
+    Click Register App
+
+2. ⬇️ Download google-services.json
+
+    After registering, download the google-services.json file.
+
+    Move it into your Android project:
+    app/ folder
+
+3. ⚙️ Add Firebase SDK to Android App
+In your project-level build.gradle:
+
+buildscript {
+    dependencies {
+        classpath 'com.google.gms:google-services:4.3.15' // Latest version
+    }
+}
+
+In your app-level build.gradle:
+
+plugins {
+    id 'com.android.application'
+    id 'com.google.gms.google-services' // Apply the Google Services plugin
+}
+
+dependencies {
+    implementation 'com.google.firebase:firebase-database:20.3.0' // Or latest
+}
+
+4. 🔥 Initialize Firebase in Java/Kotlin Code
+
+import com.google.firebase.database.*
+
+class MainActivity : AppCompatActivity() {
+
+    lateinit var database: FirebaseDatabase
+    lateinit var ref: DatabaseReference
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        database = FirebaseDatabase.getInstance()
+        ref = database.getReference("ultrasonic/distance_cm")
+
+        ref.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val distance = snapshot.getValue(Float::class.java)
+                textView.text = "Distance: $distance cm"
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(applicationContext, "Failed to read data", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+}
